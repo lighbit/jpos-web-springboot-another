@@ -1,0 +1,24 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.3.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.iso8583.web'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	maven { url 'http://download.oracle.com/maven' }
+	maven { url 'http://jpos.org/maven' }
+	mavenLocal()
+}
+
+dependencies {
+	compile ('org.jpos:jpos:2.1.2')
+	compile ('org.projectlombok:lombok')
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
