@@ -20,6 +20,7 @@ import java.util.Map;
 public class PaymentController {
     @Autowired private QMUX qmux;
     SimpleDateFormats set = new SimpleDateFormats();
+    public int stan= 0;
 
     @PostMapping("/payment")
     public Map<String, String> topup(@RequestBody @Valid PaymentIsoModel request){
@@ -29,7 +30,7 @@ public class PaymentController {
             ISOMsg msgRequest = new ISOMsg("0200");
             msgRequest.set(4, request.getAmount().setScale(0).toString());
             msgRequest.set(7, set.formatterBit7.format(new Date()));
-            msgRequest.set(11, "000001");
+            msgRequest.set(11, String.format("%06d", stan++));
             msgRequest.set(15, set.formatterbit15.format(new Date()));
             msgRequest.set(41,"ATM001KADUGADUNG");
 

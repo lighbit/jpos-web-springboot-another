@@ -20,6 +20,7 @@ import java.util.Map;
 public class TransferController {
     @Autowired private QMUX qmux;
     SimpleDateFormats set = new SimpleDateFormats();
+    public int stan= 0;
 
     @PostMapping("/transfer")
     public Map<String, String> topup(@RequestBody @Valid TransferIsoModel request){
@@ -29,7 +30,7 @@ public class TransferController {
             ISOMsg msgRequest = new ISOMsg("0200");
             msgRequest.set(4, request.getAmount().setScale(0).toString());
             msgRequest.set(7, set.formatterBit7.format(new Date()));
-            msgRequest.set(11, "000123");
+            msgRequest.set(11, String.format("%06d", stan++));
             msgRequest.set(15, set.formatterbit15.format(new Date()));
 
             String bit48 = request.getAccountnumber().substring(0,4);
