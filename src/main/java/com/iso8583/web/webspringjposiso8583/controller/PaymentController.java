@@ -34,6 +34,7 @@ public class PaymentController {
             msgRequest.set(15, set.formatterbit15.format(new Date()));
             msgRequest.set(41,"ATM001KADUGADUNG");
 
+            // TODO: Get bit 48
             String bit48 = request.getUniquenumber().substring(0,4);
             bit48 += String.format("%1$" + 13 + "s", request.getUniquenumber().substring(4));
             System.out.println("Bit 48 : ["+bit48+ request.getName() + request.getAccountto()+"]");

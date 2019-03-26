@@ -33,6 +33,7 @@ public class TopupController {
             msgRequest.set(11, String.format("%06d", stan++));
             msgRequest.set(15, set.formatterbit15.format(new Date()));
 
+            // TODO: Get bit 48
             String bit48 = request.getMsisdn().substring(0,4);
             bit48 += String.format("%1$" + 13 + "s", request.getMsisdn().substring(4));
             System.out.println("Bit 48 : ["+bit48+"]");
