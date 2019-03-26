@@ -1,6 +1,7 @@
 package com.iso8583.web.webspringjposiso8583.controller;
 
 import com.iso8583.web.webspringjposiso8583.dto.TopupIsoModel;
+import iso8583.helper.SimpleDateFormats;
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
 import org.jpos.q2.iso.QMUX;
@@ -17,13 +18,8 @@ import java.util.Map;
 
 @RestController
 public class TopupController {
-
-    private SimpleDateFormat formatterBit7 = new SimpleDateFormat("MMddHHmmss");
-    private SimpleDateFormat formatterbit15 = new SimpleDateFormat("HHmm");
-    private SimpleDateFormat formatjam = new SimpleDateFormat("HH:mm:ss");
-    private SimpleDateFormat formattanggal = new SimpleDateFormat("dd MMMMMMMM yyyy");
-
     @Autowired private QMUX qmux;
+    SimpleDateFormats set = new SimpleDateFormats();
 
     @PostMapping("/topup")
     public Map<String, String> topup(@RequestBody @Valid TopupIsoModel request){
@@ -32,9 +28,9 @@ public class TopupController {
         try {
             ISOMsg msgRequest = new ISOMsg("0200");
             msgRequest.set(4, request.getNilai().setScale(0).toString());
-            msgRequest.set(7, formatterBit7.format(new Date()));
+            msgRequest.set(7, set.formatterBit7.format(new Date()));
             msgRequest.set(11, "000123");
-            msgRequest.set(15, formatterbit15.format(new Date()));
+            msgRequest.set(15, set.formatterbit15.format(new Date()));
 
             String bit48 = request.getMsisdn().substring(0,4);
             bit48 += String.format("%1$" + 13 + "s", request.getMsisdn().substring(4));
@@ -61,12 +57,12 @@ public class TopupController {
             hasil.put("response_code", isoResponse.getString(39));
             hasil.put("raw_message", response);
             hasil.put("message", "Pengiriman pulsa dengan nomor " + request.getMsisdn() + " sebesar Rp."
-                    + request.getNilai() + " Pada tanggal " + formattanggal.format(new Date())
-                    + " pada jam " + formatjam.format(new Date())+ " Berhasil!");
+                    + request.getNilai() + " Pada tanggal " + set.formattanggal.format(new Date())
+                    + " jam " + set.formatjam.format(new Date())+ " Berhasil!");
 
             System.out.println("Pengiriman pulsa dengan nomor " + request.getMsisdn() + " sebesar Rp."
-                    + request.getNilai() + " Pada tanggal " + formattanggal.format(new Date())
-                    + " pada jam " + formatjam.format(new Date())+ " Berhasil!");
+                    + request.getNilai() + " Pada tanggal " + set.formattanggal.format(new Date())
+                    + " jam " + set.formatjam.format(new Date())+ " Berhasil!");
         } catch (ISOException e) {
             e.printStackTrace();
         }

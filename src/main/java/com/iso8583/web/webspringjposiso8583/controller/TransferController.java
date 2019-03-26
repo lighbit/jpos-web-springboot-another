@@ -1,6 +1,7 @@
 package com.iso8583.web.webspringjposiso8583.controller;
 
 import com.iso8583.web.webspringjposiso8583.dto.TransferIsoModel;
+import iso8583.helper.SimpleDateFormats;
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
 import org.jpos.q2.iso.QMUX;
@@ -14,17 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 @RestController
 public class TransferController {
-
-    private SimpleDateFormat formatterBit7 = new SimpleDateFormat("MMddHHmmss");
-    private SimpleDateFormat formatterbit15 = new SimpleDateFormat("HHmm");
-    private SimpleDateFormat formatjam = new SimpleDateFormat("HH:mm:ss");
-    private SimpleDateFormat formattanggal = new SimpleDateFormat("dd MMMMMMMM yyyy");
-    //private Integer autoIncrement = 000000;
-
-    @Autowired
-    private QMUX qmux;
+    @Autowired private QMUX qmux;
+    SimpleDateFormats set = new SimpleDateFormats();
 
     @PostMapping("/transfer")
     public Map<String, String> topup(@RequestBody @Valid TransferIsoModel request){
@@ -33,9 +28,9 @@ public class TransferController {
         try {
             ISOMsg msgRequest = new ISOMsg("0200");
             msgRequest.set(4, request.getAmount().setScale(0).toString());
-            msgRequest.set(7, formatterBit7.format(new Date()));
+            msgRequest.set(7, set.formatterBit7.format(new Date()));
             msgRequest.set(11, "000123");
-            msgRequest.set(15, formatterbit15.format(new Date()));
+            msgRequest.set(15, set.formatterbit15.format(new Date()));
 
             String bit48 = request.getAccountnumber().substring(0,4);
             bit48 += String.format("%1$" + 13 + "s", request.getAccountnumber().substring(4));
@@ -63,11 +58,11 @@ public class TransferController {
             hasil.put("raw_message", response);
             hasil.put("message: ", "Transaksi atas nama " + request.getName() + " dengan accountnumber: "
                     + request.getAccountnumber() +" Sebesar Rp." +request.getAmount() + " Pada tanggal "
-                    + formattanggal.format(new Date()) + " jam " + formatjam.format(new Date()) + " berhasil!");
+                    + set.formattanggal.format(new Date()) + " jam " + set.formatjam.format(new Date()) + " berhasil!");
 
             System.out.println("Transaksi atas nama " + request.getName() + " dengan accountnumber: "
                     + request.getAccountnumber() +" Sebesar Rp." +request.getAmount() + " Pada tanggal "
-                    + formattanggal.format(new Date()) + " jam " + formatjam.format(new Date()) + " berhasil!");
+                    + set.formattanggal.format(new Date()) + " jam " + set.formatjam.format(new Date()) + " berhasil!");
         } catch (ISOException e) {
             e.printStackTrace();
         }
