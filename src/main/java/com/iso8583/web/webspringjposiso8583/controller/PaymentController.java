@@ -20,6 +20,8 @@ public class PaymentController {
 
     private SimpleDateFormat formatterBit7 = new SimpleDateFormat("MMddHHmmss");
     private SimpleDateFormat formatterbit15 = new SimpleDateFormat("HHmm");
+    private SimpleDateFormat formatjam = new SimpleDateFormat("HH:mm:ss");
+    private SimpleDateFormat formattanggal = new SimpleDateFormat("dd MMMMMMMM yyyy");
     //private Integer autoIncrement = 000000;
 
     @Autowired
@@ -33,7 +35,7 @@ public class PaymentController {
             ISOMsg msgRequest = new ISOMsg("0200");
             msgRequest.set(4, request.getAmount().setScale(0).toString());
             msgRequest.set(7, formatterBit7.format(new Date()));
-            msgRequest.set(11, "000123");
+            msgRequest.set(11, "000001");
             msgRequest.set(15, formatterbit15.format(new Date()));
             msgRequest.set(41,"ATM001KADUGADUNG");
 
@@ -61,12 +63,15 @@ public class PaymentController {
             hasil.put("success", "true");
             hasil.put("response_code", isoResponse.getString(39));
             hasil.put("raw_message", response);
-            hasil.put("message: ", "Transaksi atas nama " + request.getName() + " dengan accountnumber: "
+            hasil.put("message: ", "Transaksi a/n " + request.getName() + " dengan accountnumber: "
                     + request.getUniquenumber() + " dengan tujuan akun: " + request.getAccountto()
-                    + " Sebesar Rp." +request.getAmount() + " berhasil!");
-            System.out.println("Transaksi atas nama " + request.getName() + " dengan accountnumber: "
+                    + " Sebesar Rp." + request.getAmount() + " Pada tanggal "
+                    + formattanggal.format(new Date()) + " pada jam " + formatjam.format(new Date()) + " berhasil!");
+
+            System.out.println("Transaksi a/n " + request.getName() + " dengan accountnumber: "
                     + request.getUniquenumber() + " dengan tujuan akun: " + request.getAccountto()
-                    + " Sebesar Rp." +request.getAmount() + " berhasil!");
+                    + " Sebesar Rp." +request.getAmount() + " Pada tanggal "  + formattanggal.format(new Date())
+                    + " pada jam " + formatjam.format(new Date()) + " berhasil!");
         } catch (ISOException e) {
             e.printStackTrace();
         }

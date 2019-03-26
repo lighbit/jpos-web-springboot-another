@@ -18,6 +18,9 @@ import java.util.Map;
 public class TransferController {
 
     private SimpleDateFormat formatterBit7 = new SimpleDateFormat("MMddHHmmss");
+    private SimpleDateFormat formatterbit15 = new SimpleDateFormat("HHmm");
+    private SimpleDateFormat formatjam = new SimpleDateFormat("HH:mm:ss");
+    private SimpleDateFormat formattanggal = new SimpleDateFormat("dd MMMMMMMM yyyy");
     //private Integer autoIncrement = 000000;
 
     @Autowired
@@ -32,6 +35,7 @@ public class TransferController {
             msgRequest.set(4, request.getAmount().setScale(0).toString());
             msgRequest.set(7, formatterBit7.format(new Date()));
             msgRequest.set(11, "000123");
+            msgRequest.set(15, formatterbit15.format(new Date()));
 
             String bit48 = request.getAccountnumber().substring(0,4);
             bit48 += String.format("%1$" + 13 + "s", request.getAccountnumber().substring(4));
@@ -58,9 +62,12 @@ public class TransferController {
             hasil.put("response_code", isoResponse.getString(39));
             hasil.put("raw_message", response);
             hasil.put("message: ", "Transaksi atas nama " + request.getName() + " dengan accountnumber: "
-                    + request.getAccountnumber() +" Sebesar Rp." +request.getAmount() + " berhasil!");
+                    + request.getAccountnumber() +" Sebesar Rp." +request.getAmount() + " Pada tanggal "
+                    + formattanggal.format(new Date()) + " jam " + formatjam.format(new Date()) + " berhasil!");
+
             System.out.println("Transaksi atas nama " + request.getName() + " dengan accountnumber: "
-                    + request.getAccountnumber() +" Sebesar Rp." +request.getAmount() + " berhasil!");
+                    + request.getAccountnumber() +" Sebesar Rp." +request.getAmount() + " Pada tanggal "
+                    + formattanggal.format(new Date()) + " jam " + formatjam.format(new Date()) + " berhasil!");
         } catch (ISOException e) {
             e.printStackTrace();
         }
