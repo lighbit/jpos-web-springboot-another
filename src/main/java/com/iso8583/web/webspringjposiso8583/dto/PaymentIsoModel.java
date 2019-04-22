@@ -1,11 +1,16 @@
 package com.iso8583.web.webspringjposiso8583.dto;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public class PaymentIsoModel {
+//@Component
+//@Service
+public class PaymentIsoModel extends BaseIsoModel {
     @NotNull @NotEmpty
     private String uniquenumber;
     @NotNull @NotEmpty
@@ -13,7 +18,17 @@ public class PaymentIsoModel {
 
     private String name;
     @Min(10000)
-    private BigDecimal amount;
+    private String amount;
+
+    public PaymentIsoModel(String atmcardnumber, String accountnumber, @Min(10000) String amount, String name) {
+
+        this.uniquenumber = atmcardnumber;
+        this.accountto = accountnumber;
+        this.amount = amount;
+        this.name = name;
+
+//        this.setBit48(bit48);
+    }
 
 
     public String getUniquenumber() {
@@ -40,11 +55,11 @@ public class PaymentIsoModel {
         this.name = name;
     }
 
-    public BigDecimal getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }
